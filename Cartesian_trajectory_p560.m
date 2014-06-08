@@ -1,7 +1,6 @@
 % Example of movement of Robot manupulator:
 % Consider End effector moving between two cartesian poses
 % The location of end effector
-% Test for checkout
 clear;
 clc;
 profile on
