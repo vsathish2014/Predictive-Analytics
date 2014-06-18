@@ -286,19 +286,17 @@ torque_average_fc_pn_mn = cat(2,torque_average_1,torque_average_2,torque_average
 
 
 
-% Torque profile due to Load Change and Process Noise
+% Torque profile due to Load Change with Process Noise and Measurement
+% noise
 
 j = 0;
-
-for i =1 : 1:60*60*24*5*10 /50 
+counter_lc = 60*60*24*5*10 /(2*50);
+for i =1 : 1: counter_lc
      nl_r = randn(1,6);
     %nl_r = randn(N,6);
     tau_lc_pn(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) )+ ...
                nl_r.*(p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) ))*.1 ;
-%      L(1).Tc = [0.395+0.5/(1+exp(-((j/300000)^5))) -0.435-0.5/(1+exp(-((j/300000)^5)))];
-%      L(2).Tc = [0.126+0.5/(1+exp(-((j/300000)^5))) -0.071-0.5/(1+exp(-((j/300000)^5)))];
-%      L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
-     j = j +5 ;
+      j = j +5 ;
          if j>=216000 
             p560.payload(10, [0,0,0.1]);
          else
@@ -306,6 +304,18 @@ for i =1 : 1:60*60*24*5*10 /50
          end 
     time(i) = j;
 end
+
+for i =counter_lc+1 : 1: counter_lc*2
+    p560.payload(10, [0,0,0.1]);
+     nl_r = randn(1,6);
+    %nl_r = randn(N,6);
+    tau_lc_pn(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) )+ ...
+               nl_r.*(p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) ))*.1 ;
+      j = j +5 ;
+ 
+    time(i) = j;
+end
+
  time_hours = time./(60*60);
 % %TAU = vertcat(tau1,tau7);
 % figure(4);
@@ -395,7 +405,7 @@ grid on;
 subplot(2,1,2);
 plot( torque_average_lc_pn_mn_m);
 set(gca,'PlotBoxAspectRatio',[5 2 1])
-title('Trend: Average Torqueper hour-pay load changed at 60th hour(with process nosie) ','FontSize', 12);
+title('Trend: Average Torqueper hour-pay load changed at 60th hour(with process and measurement nosie) ','FontSize', 12);
 xlabel('Time in hours','FontSize', 10);
 ylabel('Average Torque (Nm) per hr','FontSize', 10);
 qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
