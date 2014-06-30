@@ -5,19 +5,7 @@ clc;
 mdl_puma560
   p560.payload(2.5, [0,0,0.1]);
 
-% % % % q_1 = [-2.7925         0   -1.3381         0         0         0];
-% % % % q_2 = [-0.0690   -0.0291   -1.3381         0         0         0];
-% %   q_1 = [-2.7925   -0.7854   -3.9270   -1.9199   -1.7453   -4.6426];
-% %   q_2 = [2.7925    3.9270    0.7854    2.9671    1.7453    4.6426];
-% % 
-% % Tq_1 = p560.fkine(q_1);
-% % Tq_2 = p560.fkine(q_2);
-
-
-%path = [Tq_1(1:3,4)'; Tq_2(1:3,4)'];
-  
-%path = [ 0.5 -0.5 -0.5 ; 0.5 0.5 -0.5; -0.5 0.5 -0.5; -0.5 -0.5 -0.5;0.5 -0.5 -0.5 ];
-%p_test = mstraj(path,[0.5 0.5 0.3],[],[0.5 -0.5 -0.5],0.02,0.2);
+ 
 % p = mstraj(path,[0.5 0.5 0.3],[],[0.5 -0.5 -0.5],10,0.2);
 t_circle = circle([-0.2 -0.2 -0.2],.1,100);
 Tp = transl(1*t_circle');
@@ -34,37 +22,37 @@ q = cat(1,q,q_2);
 % Tp = homtrans(transl(-0.8563 ,  -0.1520 ,   0.0798 ),Tp);
  
 %  p560.plot(q);
-t = [0:10:10]';
-time_c = [0;5;10;15;20;25;30;35;40;45;50;55;60];
+t = [0:1:2]';
+ 
 j =1
 for i = 1: size(q,1)-1
-    [q_c(j:j+1,:), qd_c(j:j+1,:), qdd_c(j:j+1,:)] = jtraj(q(i,:),q(i+1,:),t);
-    j = j +1;
+    [q_c(j:j+2,:), qd_c(j:j+2,:), qdd_c(j:j+2,:)] = jtraj(q(i,:),q(i+1,:),t);
+    j = j +3;
 end
  
 
 %p560.plot(q_c);
-figure(1);
-p560.plot(q_c(1,:));
-figure(2);
-p560.plot(q_c(11,:));
-figure(3);
-p560.plot(q_c(22,:));
-figure(4);
-p560.plot(q_c(33,:));
-figure(5);
-p560.plot(q_c(44,:));
-figure(6);
-p560.plot(q_c(56,:));
+% figure(1);
+% p560.plot(q_c(1,:));
+% figure(2);
+% p560.plot(q_c(11,:));
+% figure(3);
+% p560.plot(q_c(22,:));
+% figure(4);
+% p560.plot(q_c(33,:));
+% figure(5);
+% p560.plot(q_c(44,:));
+% figure(6);
+% p560.plot(q_c(56,:));
 % 
 ql = q_c;
 qdl = qd_c;
 qddl = qdd_c;
  % 550 seconds for one cycle
-for cycles = 1:786
-    ql = cat(1,ql,q_c(2:56,:));
-    qdl = cat(1,qdl,qd_c(2:56,:));
-    qddl =cat(1,qddl, qdd_c(2:56,:));
+for cycles = 1:1318
+    ql = cat(1,ql,q_c(2:165,:));
+    qdl = cat(1,qdl,qd_c(2:165,:));
+    qddl =cat(1,qddl, qdd_c(2:165,:));
    
 end
 % 
@@ -74,10 +62,10 @@ end
 % Cartesian Position:
 %  
 % t : time for half cycle 
-t = [0:10:10]';
-t_cycle = [0:10:550];
+t = [0:1:1]';
+t_cycle = [0:2:328];
 l=1
-for q_row = 1:2:56
+for q_row = 1:2:164
     Ts(:,:,l:l+1) = ctraj(p560.fkine(q_c(q_row,:)),p560.fkine(q_c(q_row+1,:)),length(t));
     l = l+2;
 end
@@ -89,7 +77,7 @@ end
 %  
 figure(7);
 subplot(3,1,1);
-plot(t_cycle',transl(Ts));
+plot(t_cycle(1:164)',transl(Ts));
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 %title('Cartesian Postion vs time for one cycle: Ready to Normal position','FontSize',14)
 xlabel('Time in seconds','FontSize',10);
@@ -138,20 +126,20 @@ annotation('textbox', [0 0.9 1 0.1], ...
 % Torque required moving between two stretch position
 
 tau_1 = p560.rne(ql,qdl,qddl);
-time = [0:10:432000];
+time = [0:2:432000];
 time_hours = time./(60*60);
 
 
-x1 = tau_1(1:43200,:);
+x1 = tau_1(1:216000,:);
 x = abs(x1);
 
-% Average torque per hour - 360 * 5 (seconds)
-torque_average_1 = mean(reshape(x(:,1),360,[]))';
-torque_average_2 = mean(reshape(x(:,2),360,[]))';
-torque_average_3 = mean(reshape(x(:,3),360,[]))';
-torque_average_4 = mean(reshape(x(:,4),360,[]))';
-torque_average_5 = mean(reshape(x(:,5),360,[]))';
-torque_average_6 = mean(reshape(x(:,6),360,[]))';
+% Average torque per hour - 1800* 5 (seconds)
+torque_average_1 = mean(reshape(x(:,1),1800,[]))';
+torque_average_2 = mean(reshape(x(:,2),1800,[]))';
+torque_average_3 = mean(reshape(x(:,3),1800,[]))';
+torque_average_4 = mean(reshape(x(:,4),1800,[]))';
+torque_average_5 = mean(reshape(x(:,5),1800,[]))';
+torque_average_6 = mean(reshape(x(:,6),1800,[]))';
 
 torque_average = cat(2,torque_average_1,torque_average_2,torque_average_3,torque_average_4,torque_average_5,torque_average_6)
  
@@ -159,7 +147,7 @@ torque_average = cat(2,torque_average_1,torque_average_2,torque_average_3,torque
 % 
 % Torque with measurement noise	
 % Add gaussian noise  - measurement
-N = size(tau_1(1:43200,1),1);
+N = size(tau_1(1:216000,1),1);
 % add 10% noise based on gaussian
 scale = 0.1 ;
 nl =  randn(1, N); % noise with mean=0 and std=1;
@@ -170,12 +158,12 @@ nl =  randn(1, N); % noise with mean=0 and std=1;
  y5 = x(:,5) + nl'.*x(:,5)*.1 ;
  y6 = x(:,6) + nl'.*x(:,6)*.1 ;
   
-torque_average_2_1 = mean(reshape(y1,360,[]))';
-torque_average_2_2 = mean(reshape(y2,360,[]))'; 
-torque_average_2_3 = mean(reshape(y3,360,[]))';
-torque_average_2_4 = mean(reshape(y4,360,[]))';
-torque_average_2_5 = mean(reshape(y5,360,[]))';
-torque_average_2_6 = mean(reshape(y6,360,[]))';
+torque_average_2_1 = mean(reshape(y1,1800,[]))';
+torque_average_2_2 = mean(reshape(y2,1800,[]))'; 
+torque_average_2_3 = mean(reshape(y3,1800,[]))';
+torque_average_2_4 = mean(reshape(y4,1800,[]))';
+torque_average_2_5 = mean(reshape(y5,1800,[]))';
+torque_average_2_6 = mean(reshape(y6,1800,[]))';
 torque_average_mn = cat(2,torque_average_2_1,torque_average_2_2,torque_average_2_3,torque_average_2_4,torque_average_2_5,torque_average_2_6);
 
  
@@ -185,7 +173,7 @@ torque_average_mn = cat(2,torque_average_2_1,torque_average_2_2,torque_average_2
 
 j = 0;
 
-for i =1 : 1:43200 
+for i =1 : 1:216000 
      nl_r = randn(1,6);
     % nl_r = randn(N,6);
     tau_pn(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) )+ ...
@@ -193,7 +181,7 @@ for i =1 : 1:43200
 %      L(1).Tc = [0.395+0.5/(1+exp(-((j/300000)^5))) -0.435-0.5/(1+exp(-((j/300000)^5)))];
 %      L(2).Tc = [0.126+0.5/(1+exp(-((j/300000)^5))) -0.071-0.5/(1+exp(-((j/300000)^5)))];
 %      L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
-     j = j +10  ;
+     j = j +2  ;
     time(i) = j;
 end
  time_hours = time./(60*60);
@@ -207,23 +195,23 @@ end
 % set(qdd_legend,'FontSize',6);
 % grid on;
 
-x1 = tau_pn(1:43200,:);
+x1 = tau_pn(1:216000,:);
 x = abs(x1);
 
 % Average torque per hour - 360* 5 (seconds)
-torque_average_1 = mean(reshape(x(:,1),360,[]))';
-torque_average_2 = mean(reshape(x(:,2),360,[]))';
-torque_average_3 = mean(reshape(x(:,3),360,[]))';
-torque_average_4 = mean(reshape(x(:,4),360,[]))';
-torque_average_5 = mean(reshape(x(:,5),360,[]))';
-torque_average_6 = mean(reshape(x(:,6),360,[]))';
+torque_average_1 = mean(reshape(x(:,1),1800,[]))';
+torque_average_2 = mean(reshape(x(:,2),1800,[]))';
+torque_average_3 = mean(reshape(x(:,3),1800,[]))';
+torque_average_4 = mean(reshape(x(:,4),1800,[]))';
+torque_average_5 = mean(reshape(x(:,5),1800,[]))';
+torque_average_6 = mean(reshape(x(:,6),1800,[]))';
 
 torque_average_pn = cat(2,torque_average_1,torque_average_2,torque_average_3,torque_average_4,torque_average_5,torque_average_6)
  
  
 % Torque with process noise and measurement noise
 
-N = size(tau_pn(1:43200,1),1);
+N = size(tau_pn(1:216000,1),1);
 % add 10% noise based on gaussian
 scale = 0.1 ;
 nl =  randn(1, N); % noise with mean=0 and std=1;
@@ -234,21 +222,21 @@ nl =  randn(1, N); % noise with mean=0 and std=1;
  y5 = x(:,5) + nl'.*x(:,5)*.1 ;
  y6 = x(:,6) + nl'.*x(:,6)*.1 ;
   
-torque_average_pn_mn_1 = mean(reshape(y1,360,[]))';
-torque_average_pn_mn_2 = mean(reshape(y2,360,[]))'; 
-torque_average_pn_mn_3 = mean(reshape(y3,360,[]))';
-torque_average_pn_mn_4 = mean(reshape(y4,360,[]))';
-torque_average_pn_mn_5 = mean(reshape(y5,360,[]))';
-torque_average_pn_mn_6 = mean(reshape(y6,360,[]))';
+torque_average_pn_mn_1 = mean(reshape(y1,1800,[]))';
+torque_average_pn_mn_2 = mean(reshape(y2,1800,[]))'; 
+torque_average_pn_mn_3 = mean(reshape(y3,1800,[]))';
+torque_average_pn_mn_4 = mean(reshape(y4,1800,[]))';
+torque_average_pn_mn_5 = mean(reshape(y5,1800,[]))';
+torque_average_pn_mn_6 = mean(reshape(y6,1800,[]))';
 torque_average_pn_mn = cat(2,torque_average_pn_mn_1,torque_average_pn_mn_2,torque_average_pn_mn_3,torque_average_pn_mn_4,torque_average_pn_mn_5,torque_average_pn_mn_6);
 
  
-
+% 
 % Torque with friction change ( measurement noise and process noise)
 L = p560.links
 j = 0;
 
-for i =1 :1:43200 
+for i =1 :1:216000
      nl_r = randn(1,6);
      %nl_r = randn(N,6);
     tau_fc_pn(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:))+ ...
@@ -256,13 +244,13 @@ for i =1 :1:43200
      L(1).Tc = [0.395+0.5/(1+exp(-((j/300000)^5))) -0.435-0.5/(1+exp(-((j/300000)^5)))];
      L(2).Tc = [0.126+0.5/(1+exp(-((j/300000)^5))) -0.071-0.5/(1+exp(-((j/300000)^5)))];
      L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
-     j = j +10  ;
+     j = j +2 ;
     time(i) = j;
 end
  time_hours = time./(60*60);
  
-N = size(tau_fc_pn(1:43200 ,1),1);
-x1 = tau_fc_pn(1:43200 ,:);
+N = size(tau_fc_pn(1:216000 ,1),1);
+x1 = tau_fc_pn(1:216000 ,:);
 x = abs(x1);
 
 % add 10% noise based on gaussian
@@ -279,38 +267,38 @@ nl =  randn(1, N); % noise with mean=0 and std=1;
  
 % 
 % 
-% % Average torque per hour - 360 * 10 (seconds)
-torque_average_1 = mean(reshape(y1,360,[]))';
-torque_average_2 = mean(reshape(y2,360,[]))';
-torque_average_3 = mean(reshape(y3,360,[]))';
-torque_average_4 = mean(reshape(y4,360,[]))';
-torque_average_5 = mean(reshape(y5,360,[]))';
-torque_average_6 = mean(reshape(y6,360,[]))';
+% % Average torque per hour - 1800 * 10 (seconds)
+torque_average_1 = mean(reshape(y1,1800,[]))';
+torque_average_2 = mean(reshape(y2,1800,[]))';
+torque_average_3 = mean(reshape(y3,1800,[]))';
+torque_average_4 = mean(reshape(y4,1800,[]))';
+torque_average_5 = mean(reshape(y5,1800,[]))';
+torque_average_6 = mean(reshape(y6,1800,[]))';
 
 torque_average_fc_pn_mn = cat(2,torque_average_1,torque_average_2,torque_average_3,torque_average_4,torque_average_5,torque_average_6);
  
 
 
-% 
-% 
+
+
 % Torque with friction change (without noise)
 L = p560.links
 j = 0;
 
-for i =1 :1:43200 
+for i =1 :1:216000 
      nl_r = randn(1,6);
      %nl_r = randn(N,6);
     tau_fc(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:)) ;
      L(1).Tc = [0.395+0.5/(1+exp(-((j/300000)^5))) -0.435-0.5/(1+exp(-((j/300000)^5)))];
      L(2).Tc = [0.126+0.5/(1+exp(-((j/300000)^5))) -0.071-0.5/(1+exp(-((j/300000)^5)))];
      L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
-     j = j +10  ;
+     j = j +2 ;
     time(i) = j;
 end
  time_hours = time./(60*60);
  
-N = size(tau_fc(1:43200 ,1),1);
-x1 = tau_fc(1:43200 ,:);
+N = size(tau_fc(1:216000 ,1),1);
+x1 = tau_fc(1:216000 ,:);
 x = abs(x1);
 
  
@@ -326,12 +314,12 @@ x = abs(x1);
 % 
 % 
 % % Average torque per hour - 360 * 10 (seconds)
-torque_average_1 = mean(reshape(y1,360,[]))';
-torque_average_2 = mean(reshape(y2,360,[]))';
-torque_average_3 = mean(reshape(y3,360,[]))';
-torque_average_4 = mean(reshape(y4,360,[]))';
-torque_average_5 = mean(reshape(y5,360,[]))';
-torque_average_6 = mean(reshape(y6,360,[]))';
+torque_average_1 = mean(reshape(y1,1800,[]))';
+torque_average_2 = mean(reshape(y2,1800,[]))';
+torque_average_3 = mean(reshape(y3,1800,[]))';
+torque_average_4 = mean(reshape(y4,1800,[]))';
+torque_average_5 = mean(reshape(y5,1800,[]))';
+torque_average_6 = mean(reshape(y6,1800,[]))';
 
 torque_average_fc  = cat(2,torque_average_1,torque_average_2,torque_average_3,torque_average_4,torque_average_5,torque_average_6);
  
@@ -342,18 +330,15 @@ torque_average_fc  = cat(2,torque_average_1,torque_average_2,torque_average_3,to
 % % noise
 
 j = 0;
-counter_lc =   21600
+counter_lc =   108000;
+
 for i =1 : 1: counter_lc
      nl_r = randn(1,6);
     %nl_r = randn(N,6);
     tau_lc_pn(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) )+ ...
                nl_r.*(p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) ))*.1 ;
-      j = j +10 ;
-         if j>=216000 
-            p560.payload(10, [0,0,0.1]);
-         else
-            p560.payload(2.5, [0,0,0.1]);
-         end 
+      j = j +2 ;
+
     time(i) = j;
 end
 
@@ -363,7 +348,7 @@ for i =counter_lc+1 : 1: counter_lc*2
     %nl_r = randn(N,6);
     tau_lc_pn(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) )+ ...
                nl_r.*(p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) ))*.1 ;
-      j = j +10 ;
+      j = j +2 ;
  
     time(i) = j;
 end
@@ -379,7 +364,7 @@ end
 % set(qdd_legend,'FontSize',6);
 % grid on;
 
-x1 = tau_lc_pn( 1:43200,:);
+x1 = tau_lc_pn( 1:216000,:);
 x = abs(x1);
 % add 10% noise based on gaussian
 scale = 0.1 ;
@@ -391,13 +376,13 @@ nl =  randn(1, N); % noise with mean=0 and std=1;
  y5 = x(:,5) + nl'.*x(:,5)*.1 ;
  y6 = x(:,6) + nl'.*x(:,6)*.1 ;
 
-% Average torque per hour - 360 * 10 (seconds)
-torque_average_1 = mean(reshape(y1,360,[]))';
-torque_average_2 = mean(reshape(y2,360,[]))';
-torque_average_3 = mean(reshape(y3,360,[]))';
-torque_average_4 = mean(reshape(y4,360,[]))';
-torque_average_5 = mean(reshape(y5,360,[]))';
-torque_average_6 = mean(reshape(y6,360,[]))';
+% Average torque per hour - 1800 * 2 (seconds)
+torque_average_1 = mean(reshape(y1,1800,[]))';
+torque_average_2 = mean(reshape(y2,1800,[]))';
+torque_average_3 = mean(reshape(y3,1800,[]))';
+torque_average_4 = mean(reshape(y4,1800,[]))';
+torque_average_5 = mean(reshape(y5,1800,[]))';
+torque_average_6 = mean(reshape(y6,1800,[]))';
 
 torque_average_lc_pn_mn = cat(2,torque_average_1,torque_average_2,torque_average_3,torque_average_4,torque_average_5,torque_average_6)
  
@@ -474,6 +459,6 @@ qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
 set(qdd_legend,'FontSize',6);
 grid on;
 
-% 
-% 
-%  
+% % 
+% % 
+% %  
