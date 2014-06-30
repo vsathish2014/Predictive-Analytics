@@ -189,17 +189,17 @@ grid on;
 
 figure(11);
 subplot(3,1,1);
-plot(time(14400:15120)',tau_fc_pn_mn(14400:15120,:));
+plot(time(14400:15120)',tau_fc_pn_mn(14400:15120,1:2)); % Changed only two axis
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 title('Trend: Torque in 20th hour during friction change','FontSize', 12);
 xlabel('Time in seconds','FontSize', 10);
 ylabel('Torque (Nm)','FontSize', 10);
 qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
 set(qdd_legend,'FontSize',6);
-axis([time(1440)',time(15120)',0,200]);
+axis([time(14400)',time(15120)',0,200]);
 grid on;
 subplot(3,1,2);
-plot(time(28800:29520)',tau_fc_pn_mn(28800:29520,:));
+plot(time(28800:29520)',tau_fc_pn_mn(28800:29520,1:2));
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 title('Trend: Torque in 40th hour during friction change','FontSize', 12);
 xlabel('Time in seconds','FontSize', 10);
@@ -210,7 +210,7 @@ axis([time(28800)',time(29520)',0,200]);
 grid on;
 
 subplot(3,1,3);
-plot(time(43200:43920)',tau_fc_pn_mn(43200:43920,:));
+plot(time(43200:43920)',tau_fc_pn_mn(43200:43920,1:2));
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 title('Trend: Torque in 60th hour during friction change','FontSize', 12);
 xlabel('Time in seconds','FontSize', 10);
@@ -223,7 +223,7 @@ grid on;
 
 figure(12);
 subplot(3,1,1);
-plot(time(57600:58320)',tau_fc_pn_mn(57600:58320,:));
+plot(time(57600:58320)',tau_fc_pn_mn(57600:58320,1:2));
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 title('Trend: Torque in 80th hour during friction change','FontSize', 12);
 xlabel('Time in seconds','FontSize', 10);
@@ -233,7 +233,7 @@ set(qdd_legend,'FontSize',6);
  axis([time(57600)',time(58320)',0,200]);
 grid on;
 subplot(3,1,2);
-plot(time(72000:72720)',tau_fc_pn_mn(72000:72720,:));
+plot(time(72000:72720)',tau_fc_pn_mn(72000:72720,1:2));
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 title('Trend: Torque in 100th hour during friction change','FontSize', 12);
 xlabel('Time in seconds','FontSize', 10);
@@ -244,7 +244,7 @@ axis([time(72000)',time(72720)',0,200]);
 grid on;
 
 subplot(3,1,3);
-plot(time(85680:86400)',tau_fc_pn_mn(85680:86400,:));
+plot(time(85680:86400)',tau_fc_pn_mn(85680:86400,1:2));
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 title('Trend: Torque in 119th hour during friction change','FontSize', 12);
 xlabel('Time in seconds','FontSize', 10);
