@@ -129,40 +129,40 @@ grid on;
 
 figure(2);
 subplot(3,1,1);
-plot(time(35850:36150)',tau_lc_pn_mn(35850:36150,:));
+plot(time(35970:36030)',tau_lc_pn_mn(35970:36030,:));
 set(gca,'PlotBoxAspectRatio',[5 2 1])
-title('Trend: Torque 5 minutes before and after payload change','FontSize', 12);
+title('Trend: Torque 1 minute before and after payload change','FontSize', 12);
 xlabel('Time in seconds','FontSize', 10);
 ylabel('Torque (Nm)','FontSize', 10);
 qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
 set(qdd_legend,'FontSize',6);
-axis([time(35850)',time(36150)',0,80]);
+axis([time(35970)',time(36030)',0,80]);
 grid on;
 % Draw a line at change in load
  yL = get(gca,'YLim');
 line ([time(36000)' time(36000)'],yL,'LineStyle',':','Color','r','LineWidth',3);
 subplot(3,1,2);
-plot(time(71850:72150)',tau_lc_pn_mn(71850:72150,:));
+plot(time(71970:72030)',tau_lc_pn_mn(71970:72030,:));
 set(gca,'PlotBoxAspectRatio',[5 2 1])
-title('Trend: Torque 5 minutes before ad after payload change','FontSize', 12);
+title('Trend: Torque 1 minute before ad after payload change','FontSize', 12);
 xlabel('Time in seconds','FontSize', 10);
 ylabel('Torque (Nm)','FontSize', 10);
 qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
 set(qdd_legend,'FontSize',6);
-axis([time(71850)',time(72150)',0,80]);
+axis([time(71970)',time(72030)',0,80]);
 grid on;
 % Draw a line at change in load
  yL = get(gca,'YLim');
 line ([time(72000)' time(72000)'],yL,'LineStyle',':','Color','r','LineWidth',3);
 subplot(3,1,3);
-plot(time(107850:108150)',tau_lc_pn_mn(107850:108150,:));
+plot(time(107970:108030)',tau_lc_pn_mn(107970:108030,:));
 set(gca,'PlotBoxAspectRatio',[5 2 1])
-title('Trend: Torque 5 minutes before ad after payload change','FontSize', 12);
+title('Trend: Torque 1 minute before ad after payload change','FontSize', 12);
 xlabel('Time in seconds','FontSize', 10);
 ylabel('Torque (Nm)','FontSize', 10);
 qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
 set(qdd_legend,'FontSize',6);
-axis([time(107850)',time(108150)',0,80]);
+axis([time(107970)',time(108030)',0,80]);
 grid on;
 % Draw a line at change in load
  yL = get(gca,'YLim');
