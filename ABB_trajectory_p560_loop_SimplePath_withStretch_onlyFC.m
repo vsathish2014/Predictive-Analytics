@@ -107,75 +107,17 @@ torque_average_5 = mean(reshape(y5,720,[]))';
 torque_average_6 = mean(reshape(y6,720,[]))';
 
 torque_average_fc_pn_mn = cat(2,torque_average_1,torque_average_2,torque_average_3,torque_average_4,torque_average_5,torque_average_6);
- 
 
+% Coriolis torque
 
+coriolis_0 = p560.coriolis(ql(1,:),qdl(1,:))
+coriolis_1 = p560.coriolis(ql(720,:),qdl(720,:))
+coriolis_100 = p560.coriolis(ql(72000,:),qdl(72000,:))
 
-% % Torque profile due to Load Change with Process Noise and Measurement
-% % noise
-% 
-% j = 0;
-% counter_lc = 60*60*24*5*10 /(2*50);
-% for i =1 : 1: counter_lc
-%      nl_r = randn(1,6);
-%     %nl_r = randn(N,6);
-%     tau_lc_pn(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) )+ ...
-%                nl_r.*(p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) ))*.1 ;
-%       j = j +5 ;
-%          if j>=216000 
-%             p560.payload(10, [0,0,0.1]);
-%          else
-%             p560.payload(2.5, [0,0,0.1]);
-%          end 
-%     time(i) = j;
-% end
-% 
-% for i =counter_lc+1 : 1: counter_lc*2
-%     p560.payload(10, [0,0,0.1]);
-%      nl_r = randn(1,6);
-%     %nl_r = randn(N,6);
-%     tau_lc_pn(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) )+ ...
-%                nl_r.*(p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) ))*.1 ;
-%       j = j +5 ;
-%  
-%     time(i) = j;
-% end
-% 
-%  time_hours = time./(60*60);
-% % %TAU = vertcat(tau1,tau7);
-% % figure(4);
-% % plot(time, tau(:,1));
-% % set(gca,'PlotBoxAspectRatio',[5 2 1])
-% % xlabel('Time in seconds');
-% % ylabel('Torque Nm');
-% % qdd_legend = legend('Axis 1','Axis 2', 'Axis 3', 'Axis 4', 'Axis 5', 'Axis 6');
-% % set(qdd_legend,'FontSize',6);
-% % grid on;
-% 
-% x1 = tau_lc_pn(1:86400,:);
-% x = abs(x1);
-% % add 10% noise based on gaussian
-% scale = 0.1 ;
-% nl =  randn(1, N); % noise with mean=0 and std=1;
-%  y1 = x(:,1) + nl'.*x(:,1)*.1 ;
-%  y2 = x(:,2) + nl'.*x(:,2)*.1 ;
-%  y3 = x(:,3) + nl'.*x(:,3)*.1 ;
-%  y4 = x(:,4) + nl'.*x(:,4)*.1 ;
-%  y5 = x(:,5) + nl'.*x(:,5)*.1 ;
-%  y6 = x(:,6) + nl'.*x(:,6)*.1 ;
-% 
-% % Average torque per hour - 720 * 5 (seconds)
-% torque_average_1 = mean(reshape(y1,720,[]))';
-% torque_average_2 = mean(reshape(y2,720,[]))';
-% torque_average_3 = mean(reshape(y3,720,[]))';
-% torque_average_4 = mean(reshape(y4,720,[]))';
-% torque_average_5 = mean(reshape(y5,720,[]))';
-% torque_average_6 = mean(reshape(y6,720,[]))';
-% 
-% torque_average_lc_pn_mn = cat(2,torque_average_1,torque_average_2,torque_average_3,torque_average_4,torque_average_5,torque_average_6)
-%  
-% torque_average_lc_pn_mn_m =cat(1, torque_average_pn_mn(1:60,:),torque_average_lc_pn_mn(61:120,:));
-
+% friction torque
+F1_0 = p560.friction(qdl(1,:))
+F1_1 = p560.friction(qdl(720,:))
+F1_100 = p560.friction(qdl(72000,:))
 figure(10);
  
 plot( torque_average_fc_pn_mn);
@@ -253,6 +195,10 @@ qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
 set(qdd_legend,'FontSize',6);
 axis([time(85680)',time(86400)',0,200]);
 grid on;
+
+
+
+
 
 
 
