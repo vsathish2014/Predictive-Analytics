@@ -94,7 +94,7 @@ x1 = tau_1(1:11,:);
 % Torque with Process nosie
 
 j = 0;
-scale = 0.05;
+scale = 0.025;
 
 for i =1 : 1:lrow_p
      nl_r = randn(1,6);
@@ -112,8 +112,8 @@ for i =1 : 1:lrow_p
     g_pn_1(i,:) = p560.gravload(qdl(i,:))+....
                    nl_r.*p560.gravload(qdl(i,:))*scale;  
               
-%      L(1).Tc = [0.395+0.5/(1+exp(-((j/300000)^5))) -0.435-0.5/(1+exp(-((j/300000)^5)))];
-       L(2).Tc = [0.126+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.071-0.5/(1+exp(-((j/2500)^4)))+0.25];
+%       L(1).Tc = [0.395+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.435-0.5/(1+exp(-((j/2500)^4)))+0.25];
+        L(2).Tc = [0.126+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.071-0.5/(1+exp(-((j/2500)^4)))+0.25];
 %      L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
      j = j +5  ;
     time(i) = j;
@@ -191,7 +191,7 @@ for j = 1:6
     k=1
     for i = 1: 6 
     
-        [tc1, tlags1] = xcorr(tau_pn_mn_1(1:350,j),tau_pn_mn_1(1:350,i) );
+        [tc1, tlags1] = xcorr(tau_pn_mn_1(:,j),tau_pn_mn_1(:,i) );
         [m,id]=max(tc1);
         tauid=tlags1(id);
         tauc =tc1(id);
@@ -265,3 +265,4 @@ for j = 1:6
     end
 end    
 
+ time_minutes = time./(60);
