@@ -76,6 +76,10 @@ simDuration = 720; % in seconds
      
   end
 
+  
+% Introduced measurement noise for joint angle, velocity and acceleration: - 
+
+  
 [lrow_p lcol_p] = size(ql);
   
 
@@ -94,11 +98,40 @@ time = [0:5:simDuration];
 
 
 x1 = tau_1(1:11,:);
+% % Torque with no Process nosie
+% 
+% for i =1 : 1:lrow_p
+%      nl_r = randn(1,6);
+%     % nl_r = randn(N,6);
+%     tau_1(i,:) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) )  ;
+%            
+%     f_1(i,:)= p560.friction(qdl(i,:)) ;
+%                   
+%     i_1(i,:)= p560.itorque(ql(i,:),qddl(i ,:)) ;              
+%     c_1(:,i) = (p560.coriolis(ql(i,:),qdl(i ,:))*qdl(i,:)')'  ; 
+%     g_1(i,:) = p560.gravload(qdl(i,:)) ;  
+%               
+%  %      L(1).Tc = [0.395+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.435-0.5/(1+exp(-((j/2500)^4)))+0.25];
+%  %       L(2).Tc = [0.126+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.071-0.5/(1+exp(-((j/2500)^4)))+0.25];
+% %      L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
+% 
+% % Modify the axis to increase friction for 5 %
+% 
+% % friction change 10%  
+% %L(1).Tc = [0.395+0.5/(1+exp(-((3600/4791.5)^4)))-0.25 -0.435-0.5/(1+exp(-((3600/4791.5)^4)))+0.25];
+% L(1).Tc = [0.395+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.435-0.5/(1+exp(-((j/2500)^4)))+0.25];
+%       j = j +5  ;
+%     time(i) = j;
+% end
+
+
  
 % Torque with Process nosie
 
 j = 0;
+%scale = 0.025;
 scale = 0.025;
+ 
  
 
 for i =1 : 1:lrow_p
@@ -117,16 +150,20 @@ for i =1 : 1:lrow_p
     g_pn_1(i,:) = p560.gravload(qdl(i,:))+....
                    nl_r.*p560.gravload(qdl(i,:))*scale;  
               
- %      L(1).Tc = [0.395+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.435-0.5/(1+exp(-((j/2500)^4)))+0.25];
- %       L(2).Tc = [0.126+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.071-0.5/(1+exp(-((j/2500)^4)))+0.25];
-%      L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
-
+ 
 % Modify the axis to increase friction for 5 %
 
-  % L(1).Tc = [0.395+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.435-0.5/(1+exp(-((j/2500)^4)))+0.25];
-   L(2).Tc = [0.126+1/(1+EXP(-((A2^1.3/250000)^2)))-0.25 -0.071-1/(1+EXP(-((A2^1.3/250000)^2)))+0.25];
- %  L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
-
+% friction change 10%  
+ %   L(1).Tc = [0.395+0.5/(1+exp(-((j/4791.5)^4)))-0.25 -0.435-0.5/(1+exp(-((j/4791.5)^4)))+0.25];
+ %   L(2).Tc = [0.126+0.5/(1+exp(-((j/6387.7)^4)))-0.25 -0.071-0.5/(1+exp(-((j/6387.7)^4)))+0.25];
+  % L(3).Tc = [0.132+0.5/(1+exp(-((j/6313.7)^4)))-0.25 -0.105-0.5/(1+exp(-((j/6313.7)^4)))+0.25];
+  L(4).Tc =  [11.2e-3+0.5/(1+exp(-((j/11701)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/11701)^4)))+0.25];
+  L(5).Tc = [11.2e-3+0.5/(1+exp(-((j/12271)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/12271)^4)))+0.25];   
+  L(6).Tc = [3.96e-3+0.5/(1+exp(-((j/15174)^4)))-0.25 -10.5e-3-0.5/(1+exp(-((j/15174)^4)))+0.25];
+ 
+  
+  % friction change 50%  
+  %  L(1).Tc = [0.395+0.5/(1+exp(-((j/2975.5)^4)))-0.25 -0.435-0.5/(1+exp(-((j/2975.5)^4)))+0.25];
 
 
      j = j +5  ;
@@ -144,60 +181,68 @@ gx = g_pn_1(:,:);
  
 % Torque with process noise and measurement noise
 
-N = size(tau_pn_1(1:lrow_p,1),1);
-% add 10% noise based on gaussian
- 
-nl =  randn(1, N); % noise with mean=0 and std=1;
+% N = size(tau_pn_1(1:lrow_p,1),1);
+% % add 10% noise based on gaussian
+%  
+% nl =  randn(1, N); % noise with mean=0 and std=1;
+% 
+%  y1 = x(:,1) + nl'.*x(:,1)*scale ;
+%  y2 = x(:,2) + nl'.*x(:,2)*scale ;
+%  y3 = x(:,3) + nl'.*x(:,3)*scale ;
+%  y4 = x(:,4) + nl'.*x(:,4)*scale ;
+%  y5 = x(:,5) + nl'.*x(:,5)*scale ;
+%  y6 = x(:,6) + nl'.*x(:,6)*scale ;
+%  
+% tau_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
 
- y1 = x(:,1) + nl'.*x(:,1)*scale ;
- y2 = x(:,2) + nl'.*x(:,2)*scale ;
- y3 = x(:,3) + nl'.*x(:,3)*scale ;
- y4 = x(:,4) + nl'.*x(:,4)*scale ;
- y5 = x(:,5) + nl'.*x(:,5)*scale ;
- y6 = x(:,6) + nl'.*x(:,6)*scale ;
- 
-tau_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
 
 
+%  y1 = fx(:,1) + nl'.*fx(:,1)*scale ;
+%  y2 = fx(:,2) + nl'.*fx(:,2)*scale ;
+%  y3 = fx(:,3) + nl'.*fx(:,3)*scale ;
+%  y4 = fx(:,4) + nl'.*fx(:,4)*scale ;
+%  y5 = fx(:,5) + nl'.*fx(:,5)*scale ;
+%  y6 = fx(:,6) + nl'.*fx(:,6)*scale ;
+%  
+% f_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
+% 
+%  y1 = ix(:,1) + nl'.*ix(:,1)*scale ;
+%  y2 = ix(:,2) + nl'.*ix(:,2)*scale ;
+%  y3 = ix(:,3) + nl'.*ix(:,3)*scale ;
+%  y4 = ix(:,4) + nl'.*ix(:,4)*scale ;
+%  y5 = ix(:,5) + nl'.*ix(:,5)*scale ;
+%  y6 = ix(:,6) + nl'.*ix(:,6)*scale ;
+%  
+% i_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
+% 
+%  y1 = cx(:,1) + nl'.*cx(:,1)*scale ;
+%  y2 = cx(:,2) + nl'.*cx(:,2)*scale ;
+%  y3 = cx(:,3) + nl'.*cx(:,3)*scale ;
+%  y4 = cx(:,4) + nl'.*cx(:,4)*scale ;
+%  y5 = cx(:,5) + nl'.*cx(:,5)*scale ;
+%  y6 = cx(:,6) + nl'.*cx(:,6)*scale ;
+% 
+%  c_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
+%  
+%   y1 = gx(:,1) + nl'.*gx(:,1)*scale ;
+%  y2 = gx(:,2) + nl'.*gx(:,2)*scale ;
+%  y3 = gx(:,3) + nl'.*gx(:,3)*scale ;
+%  y4 = gx(:,4) + nl'.*gx(:,4)*scale ;
+%  y5 = gx(:,5) + nl'.*gx(:,5)*scale ;
+%  y6 = gx(:,6) + nl'.*gx(:,6)*scale ;
+%  
+%  g_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
+%  
+ 
+% Copy dat awith only ine type of measurement - 
 
- y1 = fx(:,1) + nl'.*fx(:,1)*scale ;
- y2 = fx(:,2) + nl'.*fx(:,2)*scale ;
- y3 = fx(:,3) + nl'.*fx(:,3)*scale ;
- y4 = fx(:,4) + nl'.*fx(:,4)*scale ;
- y5 = fx(:,5) + nl'.*fx(:,5)*scale ;
- y6 = fx(:,6) + nl'.*fx(:,6)*scale ;
- 
-f_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
+tau_pn_mn_1 = tau_pn_1;
+f_pn_mn_1 = f_pn_1 ;
+i_pn_mn_1 = i_pn_1 ;
+c_pn_mn_1 = c_pn_1';
+g_pn_mn_1 = g_pn_1;
 
- y1 = ix(:,1) + nl'.*ix(:,1)*scale ;
- y2 = ix(:,2) + nl'.*ix(:,2)*scale ;
- y3 = ix(:,3) + nl'.*ix(:,3)*scale ;
- y4 = ix(:,4) + nl'.*ix(:,4)*scale ;
- y5 = ix(:,5) + nl'.*ix(:,5)*scale ;
- y6 = ix(:,6) + nl'.*ix(:,6)*scale ;
- 
-i_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
-
- y1 = cx(:,1) + nl'.*cx(:,1)*scale ;
- y2 = cx(:,2) + nl'.*cx(:,2)*scale ;
- y3 = cx(:,3) + nl'.*cx(:,3)*scale ;
- y4 = cx(:,4) + nl'.*cx(:,4)*scale ;
- y5 = cx(:,5) + nl'.*cx(:,5)*scale ;
- y6 = cx(:,6) + nl'.*cx(:,6)*scale ;
-
- c_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
- 
-  y1 = gx(:,1) + nl'.*gx(:,1)*scale ;
- y2 = gx(:,2) + nl'.*gx(:,2)*scale ;
- y3 = gx(:,3) + nl'.*gx(:,3)*scale ;
- y4 = gx(:,4) + nl'.*gx(:,4)*scale ;
- y5 = gx(:,5) + nl'.*gx(:,5)*scale ;
- y6 = gx(:,6) + nl'.*gx(:,6)*scale ;
- 
- g_pn_mn_1 = cat(2,y1,y2,y3,y4,y5,y6);
- 
- 
- Toque_tot_1_err = tau_pn_mn_1 - (-f_pn_mn_1+i_pn_mn_1+c_pn_mn_1+g_pn_mn_1)
+% Toque_tot_1_err = tau_pn_mn_1 - (-f_pn_mn_1+i_pn_mn_1+c_pn_mn_1+g_pn_mn_1)
  
 % Torque Lag - Cross correlation
 tauid_1 = ones(6);
@@ -246,37 +291,37 @@ end
 % disp(torqueLag1);
 
  
-% % Friction Torque Lag - Cross correlation
-% ft_1 = ones(6);
-% for j = 1:6
-%     k=1
-%     for i = 1: 6 
-%     
-%         [fc1, flags1] = xcorr(f_pn_mn_1(1:350,j),f_pn_mn_1(1:350,i));
-%         [m,id]=max(fc1);
-%         tauid=flags1(id);
-%         tauc = fc1(id);
-%         ftid_1(j,k) = tauid;
-%         ftc_1(j,k) = tauc;
-%         k = k+1
-%     %plot(lags, c(1:end));
-%     end
-% end    
-% 
-% ft_2 = ones(6);
-% for j = 1:6
-%     k=1
-%     for i = 1: 6 
-%     
-%         [fc2, flags2] = xcorr(f_pn_mn_1(351:721,j),f_pn_mn_1(351:721,i));
-%         [m,id]=max(fc2);
-%         tauid=flags2(id);
-%         tauc = fc2(id);
-%         ftid_2(j,k) = tauid;
-%         ftc_2(j,k) = tauc;
-%         k = k+1
-%     %plot(lags, c(1:end));
-%     end
-% end    
+% Friction Torque Lag - Cross correlation
+ft_1 = ones(6);
+for j = 1:6
+    k=1
+    for i = 1: 6 
+    
+        [fc1, flags1] = xcorr(f_pn_mn_1(1:350,j),f_pn_mn_1(1:350,i));
+        [m,id]=max(fc1);
+        tauid=flags1(id);
+        tauc = fc1(id);
+        ftid_1(j,k) = tauid;
+        ftc_1(j,k) = tauc;
+        k = k+1
+    %plot(lags, c(1:end));
+    end
+end    
+
+ft_2 = ones(6);
+for j = 1:6
+    k=1
+    for i = 1: 6 
+    
+        [fc2, flags2] = xcorr(f_pn_mn_1(351:721,j),f_pn_mn_1(351:721,i));
+        [m,id]=max(fc2);
+        tauid=flags2(id);
+        tauc = fc2(id);
+        ftid_2(j,k) = tauid;
+        ftc_2(j,k) = tauc;
+        k = k+1
+    %plot(lags, c(1:end));
+    end
+end    
 
  time_minutes = time./(60);

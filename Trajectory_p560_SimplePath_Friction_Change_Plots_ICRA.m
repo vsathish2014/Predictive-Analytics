@@ -71,11 +71,12 @@ time_minutes_1 = time_minutes(:,2:end);
 %plot(time_minutes, tau_pn_mn_1);
 plot( tau_pn_mn_3,'LineWidth',2);
 set(gca,'PlotBoxAspectRatio',[5 2 1])
-title('Trend: Overall Torque - Joint configuration 7 ','FontSize', 14);
-xlabel('Time in minutes','FontSize', 12);
-ylabel('Torque (Nm)','FontSize', 12);
+title('Trend: Overall Torque - Joint configuration 7 ','FontSize', 16);
+xlabel('Time in minutes','FontSize', 14);
+ylabel('Torque (Nm)','FontSize', 14);
 qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
 set(qdd_legend,'FontSize',10);
+set(gca,'XTick',[0:5:60]);
 grid on;
 % 
  
@@ -204,7 +205,7 @@ grid on;
 
 figure(7)
  
-plot(time_minutes,cat(2,tau_pn_mn_1(:,2),f_pn_mn_1(:,2),i_pn_mn_1(:,2),c_pn_mn_1(:,2),g_pn_mn_1(:,2)),'LineWidth',2);
+plot(time_minutes,cat(2,tau_pn_mn_1(:,4),f_pn_mn_1(:,4),i_pn_mn_1(:,4),c_pn_mn_1(:,4),g_pn_mn_1(:,4)),'LineWidth',2);
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 title('Trend: Torque  ','FontSize', 12);
 xlabel('Time in minutes','FontSize', 10);
@@ -224,3 +225,97 @@ ylabel('Torque (Nm)','FontSize', 12);
 qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
 set(qdd_legend,'FontSize',10);
 grid on;
+%
+figure(9);
+tau_pn_mn_2 = tau_pn_mn_1(2:end,3); 
+tau_pn_mn_3 = tau_pn_mn_2(7:12:end,:)
+% tau_2 = tau_1(2:end,1); 
+% tau_3 = tau_2(7:12:end,:)
+time_minutes_1 = time_minutes(:,2:end);
+%plot(time_minutes, tau_pn_mn_1);
+plot( tau_pn_mn_3,'LineWidth',2);
+set(gca,'PlotBoxAspectRatio',[5 2 1])
+title('Trend: Overall Torque - Joint configuration 7 ','FontSize', 14);
+xlabel('Time in minutes','FontSize', 12);
+ylabel('Torque (Nm)','FontSize', 12);
+qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
+set(qdd_legend,'FontSize',10);
+grid on;
+
+% figure(10);
+% tau_pn_mn_2 = tau_pn_mn_1(2:end,1); 
+% tau_pn_mn_3 = tau_pn_mn_2(7:12:end,:)
+% tau_2 = tau_1(2:end,1); 
+% tau_3 = tau_2(7:12:end,:)
+% time_minutes_1 = time_minutes(:,2:end);
+% %plot(time_minutes, tau_pn_mn_1);
+% plot( tau_3,'LineWidth',2);
+% set(gca,'PlotBoxAspectRatio',[5 2 1])
+% title('Trend: Overall Torque - Joint configuration 7 ','FontSize', 14);
+% xlabel('Time in minutes','FontSize', 12);
+% ylabel('Torque (Nm)','FontSize', 12);
+% qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
+% set(qdd_legend,'FontSize',10);
+% grid on;
+
+figure(11)
+ 
+%plot(time_minutes,cat(2,f_pn_mn_1(:,1),f_pn_mn_1(:,2),f_pn_mn_1(:,3),f_pn_mn_1(:,4),f_pn_mn_1(:,5),f_pn_mn_1(:,6) ),'LineWidth',2);
+%plot(time_minutes,cat(2, f_pn_mn_1(:,4),f_pn_mn_1(:,5),f_pn_mn_1(:,6) ),'LineWidth',2);
+plot(time_minutes,cat(2, f_pn_mn_1(:,5)  ),'LineWidth',2);
+
+set(gca,'PlotBoxAspectRatio',[5 2 1])
+title('Trend: Friction Torque  ','FontSize', 16);
+xlabel('Time in minutes','FontSize', 14);
+ylabel('Torque (Nm)','FontSize', 14);
+% qdd_legend = legend( 'Frictional Torque-1','Frictional Torque-2','Frictional Torque-3','Frictional Torque-4', 'Frictional Torque-5', 'Frictional Torque-6' );
+% qdd_legend = legend(  'Frictional Torque-4', 'Frictional Torque-5', 'Frictional Torque-6' );
+qdd_legend = legend(  'Frictional Torque-5'  );
+ set(qdd_legend,'FontSize',14);
+grid on;
+
+figure(12)
+ 
+%plot(time_minutes,cat(2,f_pn_mn_1(:,1),f_pn_mn_1(:,2),f_pn_mn_1(:,3),f_pn_mn_1(:,4),f_pn_mn_1(:,5),f_pn_mn_1(:,6) ),'LineWidth',2);
+%plot(time_minutes,cat(2, f_pn_mn_1(:,4),f_pn_mn_1(:,5),f_pn_mn_1(:,6) ),'LineWidth',2);
+plot(time_minutes,cat(2, tau_pn_mn_1(:,6)  ),'LineWidth',2);
+
+set(gca,'PlotBoxAspectRatio',[5 2 1])
+title('Trend: Overall Torque  ','FontSize', 16);
+xlabel('Time in minutes','FontSize', 14);
+ylabel('Torque (Nm)','FontSize', 14);
+% qdd_legend = legend( 'Frictional Torque-1','Frictional Torque-2','Frictional Torque-3','Frictional Torque-4', 'Frictional Torque-5', 'Frictional Torque-6' );
+% qdd_legend = legend(  'Frictional Torque-4', 'Frictional Torque-5', 'Frictional Torque-6' );
+qdd_legend = legend(  'Overall Torque-6'  );
+ set(qdd_legend,'FontSize',14);
+grid on;
+
+figure(13);
+ f_pn_mn_21 = f_pn_mn_1(2:end,4:6); 
+f_pn_mn_31 = f_pn_mn_21(7:12:end,:)
+%plot( time_minutes,f_pn_mn_1);
+plot(f_pn_mn_31,'LineWidth',2);
+set(gca,'PlotBoxAspectRatio',[5 2 1])
+%title('Trend: Frictional Torque  ','FontSize', 12);
+title('Trend: Frictional Torque - Joint configuration 7 ','FontSize', 16);
+xlabel('Time in minutes','FontSize', 14);
+ylabel('Torque (Nm)','FontSize', 14);
+qdd_legend = legend( 'Axis 4','Axis 5','Axis 6');
+set(qdd_legend,'FontSize',10);
+grid on;
+
+figure(14);
+ tau_pn_mn_21 = tau_pn_mn_1(2:end,4:6); 
+tau_pn_mn_31 = tau_pn_mn_21(7:12:end,:)
+%plot( time_minutes,f_pn_mn_1);
+plot(tau_pn_mn_31,'LineWidth',2);
+set(gca,'PlotBoxAspectRatio',[5 2 1])
+%title('Trend: Frictional Torque  ','FontSize', 12);
+title('Trend: Overall Torque - Joint configuration 7 ','FontSize', 16);
+xlabel('Time in minutes','FontSize', 14);
+ylabel('Torque (Nm)','FontSize', 14);
+qdd_legend = legend( 'Axis 4','Axis 5','Axis 6');
+set(qdd_legend,'FontSize',10);
+grid on;
+
+ 

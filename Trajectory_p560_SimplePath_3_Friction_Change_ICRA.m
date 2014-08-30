@@ -11,8 +11,8 @@ mdl_puma560
   %q_1 = [-2.7925   -0.7854   -3.9270   -1.9199   -1.7453   -4.6426];
   %q_2 = [2.7925    3.9270    0.7854    2.9671    1.7453    4.6426];
   
-  q_1 = [ -2.7925    0.2036   -1.5126   -1.9199   -1.7453    0.0000];
-  q_2 = [0.0690   -0.0582   -3.1125   -1.9199   -1.7453    0.0000];
+  q_1 = [ 0    1.5708   -1.5708         0         0         0];
+  q_2 = [2.7925    3.9270    0.7854    2.9671    1.7453    4.6426];
 
 Tq_1 = p560.fkine(q_1);
 Tq_2 = p560.fkine(q_2);
@@ -98,7 +98,7 @@ x1 = tau_1(1:11,:);
 % Torque with Process nosie
 
 j = 0;
-scale = 0.025;
+scale = 0.0025;
  
 
 for i =1 : 1:lrow_p
@@ -117,15 +117,9 @@ for i =1 : 1:lrow_p
     g_pn_1(i,:) = p560.gravload(qdl(i,:))+....
                    nl_r.*p560.gravload(qdl(i,:))*scale;  
               
- %      L(1).Tc = [0.395+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.435-0.5/(1+exp(-((j/2500)^4)))+0.25];
- %       L(2).Tc = [0.126+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.071-0.5/(1+exp(-((j/2500)^4)))+0.25];
-%      L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
-
-% Modify the axis to increase friction for 5 %
-
-  % L(1).Tc = [0.395+0.5/(1+exp(-((j/2500)^4)))-0.25 -0.435-0.5/(1+exp(-((j/2500)^4)))+0.25];
-   L(2).Tc = [0.126+1/(1+EXP(-((A2^1.3/250000)^2)))-0.25 -0.071-1/(1+EXP(-((A2^1.3/250000)^2)))+0.25];
- %  L(3).Tc = [0.132+0.5/(1+exp(-((j/300000)^5))) -0.105-0.5/(1+exp(-((j/300000)^5)))];
+  %   L(1).Tc = [0.395+0.5/(1+exp(-((j/4791.5)^4)))-0.25 -0.435-0.5/(1+exp(-((j/4791.5)^4)))+0.25];
+  % L(2).Tc = [0.126+0.5/(1+exp(-((j/6387.7)^4)))-0.25 -0.071-0.5/(1+exp(-((j/6387.7)^4)))+0.25];
+   L(3).Tc = [0.132+0.5/(1+exp(-((j/6313.7)^4)))-0.25 -0.105-0.5/(1+exp(-((3600/6313.7)^4)))+0.25];
 
 
 
@@ -246,37 +240,37 @@ end
 % disp(torqueLag1);
 
  
-% % Friction Torque Lag - Cross correlation
-% ft_1 = ones(6);
-% for j = 1:6
-%     k=1
-%     for i = 1: 6 
-%     
-%         [fc1, flags1] = xcorr(f_pn_mn_1(1:350,j),f_pn_mn_1(1:350,i));
-%         [m,id]=max(fc1);
-%         tauid=flags1(id);
-%         tauc = fc1(id);
-%         ftid_1(j,k) = tauid;
-%         ftc_1(j,k) = tauc;
-%         k = k+1
-%     %plot(lags, c(1:end));
-%     end
-% end    
-% 
-% ft_2 = ones(6);
-% for j = 1:6
-%     k=1
-%     for i = 1: 6 
-%     
-%         [fc2, flags2] = xcorr(f_pn_mn_1(351:721,j),f_pn_mn_1(351:721,i));
-%         [m,id]=max(fc2);
-%         tauid=flags2(id);
-%         tauc = fc2(id);
-%         ftid_2(j,k) = tauid;
-%         ftc_2(j,k) = tauc;
-%         k = k+1
-%     %plot(lags, c(1:end));
-%     end
-% end    
+% Friction Torque Lag - Cross correlation
+ft_1 = ones(6);
+for j = 1:6
+    k=1
+    for i = 1: 6 
+    
+        [fc1, flags1] = xcorr(f_pn_mn_1(1:350,j),f_pn_mn_1(1:350,i));
+        [m,id]=max(fc1);
+        tauid=flags1(id);
+        tauc = fc1(id);
+        ftid_1(j,k) = tauid;
+        ftc_1(j,k) = tauc;
+        k = k+1
+    %plot(lags, c(1:end));
+    end
+end    
+
+ft_2 = ones(6);
+for j = 1:6
+    k=1
+    for i = 1: 6 
+    
+        [fc2, flags2] = xcorr(f_pn_mn_1(351:721,j),f_pn_mn_1(351:721,i));
+        [m,id]=max(fc2);
+        tauid=flags2(id);
+        tauc = fc2(id);
+        ftid_2(j,k) = tauid;
+        ftc_2(j,k) = tauc;
+        k = k+1
+    %plot(lags, c(1:end));
+    end
+end    
 
  time_minutes = time./(60);

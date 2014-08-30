@@ -13,14 +13,23 @@ entropy_sum = nansum(entropy_i);
 
 figure(3);
 plot(expectation);
-axis([0,12,0.1,1]);
+%axis([0,12,0.5,1]);
+set(gca,'PlotBoxAspectRatio',[5 2 1]) 
+ 
+set(gca,'Title',text('String','Expectation vs samples','FontSize',16)); 
+ 
+xlabel('samples','FontSize',14);
+ylabel('Expectation','FontSize',14);
+
 figure(4);
 plot(entropy_sum);
-axis([0,12,1,3.5]);
-set(gca,'PlotBoxAspectRatio',[5 2 1])
-%title('Entropy vs samples','FontSize',14)
-xlabel('samples','FontSize',12);
-ylabel('Entropy','FontSize',12);
+%axis([0,12,1,3.5]);
+set(gca,'PlotBoxAspectRatio',[5 2 1]) 
+ 
+set(gca,'Title',text('String','Entropy vs samples','FontSize',16)); 
+ 
+xlabel('samples','FontSize',14);
+ylabel('Entropy','FontSize',14);
 
 % figure(4);
 % plot(std_dev);
