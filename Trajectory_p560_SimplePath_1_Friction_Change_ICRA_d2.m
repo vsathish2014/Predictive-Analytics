@@ -61,10 +61,8 @@ simDuration = 720; % in seconds
       qddl =cat(1,qddl, qdd_c(2:lrow_c,:));
      
   end
-
   
 % Introduced measurement noise for joint angle, velocity and acceleration: - 
-
   
 [lrow_p lcol_p] = size(ql);
 
