@@ -1,4 +1,3 @@
- 
 
     clear;
     clc;
@@ -7,7 +6,7 @@
 
     mdl_puma560
       p560.payload(2.5, [0,0,0.1]);
-% Initial and final postion of trajectory:
+
     q_1 = [-2.7925   0.2036   -1.5126   -1.9199   -1.7453    0.0000];
     q_2 = [0.0690   -0.0582   -3.1125   -1.9199   -1.7453    0.0000];
 
@@ -37,26 +36,25 @@
     qddl = qdd_c;
 
     [lrow_c lcol_c] = size(q_c);
-    simDuration = 360*24*5; % in time step of 10 seconds
-    
-         for cycles = 1:(simDuration/(lrow_c-1))-1
+
+    simDuration = 360*24*5; % in terms of 10 seconds
+
+      for cycles = 1:(simDuration/(lrow_c-1))-1
           ql = cat(1,ql,q_c(2:lrow_c,:));
           qdl = cat(1,qdl,qd_c(2:lrow_c,:));
           qddl =cat(1,qddl, qdd_c(2:lrow_c,:));
 
       end
 
-    % Calculate torque with friction change using Inverse dynamic equation
+    % Calculate torque with friction change
 
-    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%%%%%%%  Friction Change 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        fc_pct = 20;
+    % Torque with Process nosie
 
     j = 0;
     axis =1; 
+    fc_pct = 20;
     L = p560.links;
-     simActualDuration = 3600*24*5;
+    simActualDuration = 3600*24*5;
     time = [0:10:simActualDuration];
      time_minutes = time./(60);
     [lrow_p lcol_p] = size(ql);
@@ -67,10 +65,17 @@
             tau_fc(i,:,axis) = p560.rne(ql(i,:),qdl(i ,:), qddl(i ,:) ) ;
 
             f_fc(i,:,axis)= p560.friction(qdl(i,:)) ;
-     
-       
+        %                   
+        %     i_fc(i,:)= p560.itorque(ql(i,:),qddl(i ,:)) ;
+        %     
+        %     c_fc(:,i) = (p560.coriolis(ql(i,:),qdl(i ,:))*qdl(i,:)')'  ; 
+        %     
+        %     g_fc(i,:) = p560.gravload(qdl(i,:)) ;  
 
-                switch axis
+
+         % friction change 10% 
+
+               switch axis
                     case 1
                             
                          switch fc_pct
@@ -107,16 +112,16 @@
                           % L(4).Tc = [11.2e-3+0.5/(1+exp(-((j/280830)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/280830)^4)))+0.25];
                                  L(4).Tc =  [11.2e-3+0.5/(1+exp(-((j/1404100)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/1404100)^4)))+0.25];
                              case 20
-                                 L(4).Tc =  [11.2e-3+0.5/(1+exp(-((j/1180700)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/1180700)^4)))+0.25];                                 
+                                 L(4).Tc =  [11.2e-3+0.5/(1+exp(-((j/118070)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/118070)^4)))+0.25];                                 
                          end        
                     case 5
                          switch fc_pct
                             case 10
                           %L(5).Tc = [11.2e-3+0.5/(1+exp(-((j/12271)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/12271)^4)))+0.25];   
                           %  L(5).Tc = [11.2e-3+0.5/(1+exp(-((j/294500)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/294500)^4)))+0.25];
-                                 L(5).Tc =  [0.00926+0.5/(1+exp(-((j/1472500)^4)))-0.25 -14.5e-3-0.5/(1+exp(-((j/1472500)^4)))+0.25];
+                                 L(5).Tc =  [11.2e-3+0.5/(1+exp(-((j/147250)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/147250)^4)))+0.25];
                              case 20
-                                 L(5).Tc =  [0.00926+0.5/(1+exp(-((j/1238200)^4)))-0.25 -14.5e-3-0.5/(1+exp(-((j/1238200)^4)))+0.25];
+                                 L(5).Tc =  [11.2e-3+0.5/(1+exp(-((j/123820)^4)))-0.25 -16.9e-3-0.5/(1+exp(-((j/123820)^4)))+0.25];
                                  
                          end        
                     case 6
@@ -124,9 +129,9 @@
                             case 10
                          % L(6).Tc = [3.96e-3+0.5/(1+exp(-((j/15174)^4)))-0.25 -10.5e-3-0.5/(1+exp(-((j/15174)^4)))+0.25];
                          %L(6).Tc = [3.96e-3+0.5/(1+exp(-((j/364180)^4)))-0.25 -10.5e-3-0.5/(1+exp(-((j/364180)^4)))+0.25];
-                                L(6).Tc =  [3.96e-3+0.5/(1+exp(-((j/1472500)^4)))-0.25 -10.5e-3-0.5/(1+exp(-((j/1472500)^4)))+0.25];
+                                L(6).Tc =  [3.96e-3+0.5/(1+exp(-((j/147250)^4)))-0.25 -10.5e-3-0.5/(1+exp(-((j/147250)^4)))+0.25];
                              case 20
-                               L(6).Tc =  [3.96e-3+0.5/(1+exp(-((j/1530500)^4)))-0.25 -10.5e-3-0.5/(1+exp(-((j/1530500)^4)))+0.25];  
+                               L(6).Tc =  [3.96e-3+0.5/(1+exp(-((j/123820)^4)))-0.25 -10.5e-3-0.5/(1+exp(-((j/123820)^4)))+0.25];  
                          end        
                 end
 
@@ -162,60 +167,3 @@
 
         f_fc_pn(:,:,axis) = cat(2,y1,y2,y3,y4,y5,y6);
     end
-    
-% Forward dynamics - with a robot model (no friction)
-    R =p560.nofriction();
-    % 10 seconds - time step
-    parfor axis =1:6
-        [T(:,:,axis) Q(:,:,axis) QD(:,:,axis)] = R.fdyn([0.001:0.001:43.2],tau_fc_pn(:,:,axis));
-        QDD(:,:,axis) = R.accel(Q(:,:,axis), QD(:,:,axis),tau_fc_pn(:,:,axis));
-    end
-
-    % Add Measurement noise to Q, QD, and QDD
-
-    parfor axis = 1:6
-            N = size(Q(1:lrow_p,1,axis),1);
-        % add 10% noise based on gaussian
-        scale = 0.01  ;
-        nl =  randn(1, N); % noise with mean=0 and std=1;
-
-         y1 = Q(:,1,axis) + nl'.*0.0001*1 ;
-         y2 = Q(:,2,axis) + nl'.*0.0001*1 ;
-         y3 = Q(:,3,axis) + nl'.*0.0001*1 ;
-         y4 = Q(:,4,axis) + nl'.*0.0001*1 ;
-         y5 = Q(:,5,axis) + nl'.*0.0001*1 ;
-         y6 = Q(:,6,axis) + nl'.*0.0001*1 ;
-
-        Q_mn(:,:,axis) = cat(2,y1,y2,y3,y4,y5,y6);
-
-       %clear y1,y2,y3,y4,y5,y6;
-
-        y1 = QD(:,1,axis) + nl'.*0.0001*10 ;
-         y2 = QD(:,2,axis) + nl'.*0.0001*10 ;
-         y3 = QD(:,3,axis) + nl'.*0.0001*10 ;
-         y4 = QD(:,4,axis) + nl'.*0.0001*10 ;
-         y5 = QD(:,5,axis) + nl'.*0.0001*10 ;
-         y6 = QD(:,6,axis) + nl'.*0.0001*10 ;
-
-        QD_mn(:,:,axis) = cat(2,y1,y2,y3,y4,y5,y6);
-        
-        %clear y1,y2,y3,y4,y5,y6;
-        
-         y1 = QDD(:,1,axis) + nl'.*0.0001*100 ;
-         y2 = QDD(:,2,axis) + nl'.*0.0001*100 ;
-         y3 = QDD(:,3,axis) + nl'.*0.0001*100 ;
-         y4 = QDD(:,4,axis) + nl'.*0.0001*100 ;
-         y5 = QDD(:,5,axis) + nl'.*0.0001*100 ;
-         y6 = QDD(:,6,axis) + nl'.*0.0001*100 ;
-
-        QDD_mn(:,:,axis) = cat(2,y1,y2,y3,y4,y5,y6);
-        %clear y1,y2,y3,y4,y5,y6;
-    end
-
-       parfor axis = 1:6
-           tau_fc_pn_mn(:,:,axis) = R.rne(Q_mn(:,:,axis),QD_mn(:,:,axis),QDD_mn(:,:,axis));
-       end
-
-      matlabpool close;
-      profile off;
- 
