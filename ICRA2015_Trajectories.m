@@ -13,28 +13,34 @@
     figure(1);
     subplot(1,2,1)
   %  subaxis(1,2,1, 'Spacing', 0.05, 'Padding', 0, 'Margin', 0.075);
-    plot3(Tq1(:,1),Tq1(:,2),Tq1(:,3),'color','k','Linewidth',2);
-    title('Top view - Trajectory 1','FontSize',14);
+    plot3(Tq1(:,1),Tq1(:,2),Tq1(:,3),'color','k','Linewidth',3);
+    title('Top view','FontSize',24);
+     xlabel('x-position','FontSize', 20);
+     ylabel('y-position','FontSize', 20);
       axis image
-    ylim([-1 1])
-    xlim([-1 1])
-    zlim([-1 1])
+    ylim([-1.25 1.25])
+    xlim([-1.25 1.25])
+    zlim([-1.25 1.25])
     
-    set(gca,'FontSize',12);
+    set(gca,'FontSize',20);
     az =0;
     el = 90;
     view(az,el);
+    grid off
     subplot(1,2,2);
   %    subaxis(1,2,2, 'Spacing', 0.03, 'Padding', 0, 'Margin', 0.05);
-    plot3(Tq1(:,1),Tq1(:,2),Tq1(:,3),'color','k','Linewidth',2);
-     title('Side view - Trajectory 1','FontSize',14);
+    plot3(Tq1(:,1),Tq1(:,2),Tq1(:,3),'color','k','Linewidth',3);
+     title('Side view','FontSize',24);
+     xlabel('x-position','FontSize', 20);
+     zlabel('z-position','FontSize', 20);
        set(gca,'YTick',[-1:0.2:1]);
          axis image;
-       ylim([-1 1])
-       xlim([-1 1])
-       zlim([-1 1]) 
+       ylim([-1.25 1.25])
+       xlim([-1.25 1.25])
+       zlim([-1.25 1.25]) 
     view (0,0);
-    set(gca,'FontSize',12);
+    set(gca,'FontSize',20);
+    grid off;
   
     
     % Trajecotry 2:
@@ -52,29 +58,34 @@
     
     figure(2);
     subplot(1,2,1);
-    plot3(Tq2(:,1),Tq2(:,2),Tq2(:,3),'color','k','Linewidth',2);
+    plot3(Tq2(:,1),Tq2(:,2),Tq2(:,3),'color','k','Linewidth',3);
     % subaxis(1,2,1, 'Spacing', 0, 'Padding', 0, 'Margin', 0);
-    title('Top view - Trajectory 2','FontSize',14);
+    title('Top view','FontSize',24);
+     xlabel('x-position','FontSize', 20);
+     ylabel('y-position','FontSize', 20);
     %set(gca,'YTick',[-1:0.2:1]);
     axis image;
-      ylim([-1 1]);
-    xlim([-1 1]);
-    zlim([-1 1]);
+      ylim([-1.25 1.25]);
+    xlim([-1.25 1.25]);
+    zlim([-1.25 1.25]);
     az =0;
     el = 90;
     view(az,el);
-     set(gca,'FontSize',12);
-     
+     set(gca,'FontSize',20);
+     grid off
     subplot(1,2,2);
-    plot3(Tq2(:,1),Tq2(:,2),Tq2(:,3),'color','k','Linewidth',2);
+    plot3(Tq2(:,1),Tq2(:,2),Tq2(:,3),'color','k','Linewidth',3);
     % subaxis(1,2,2, 'Spacing', 0.03, 'Padding', 0, 'Margin', 0.05);
-     title('Side view - Trajectory 2','FontSize',14);
+     title('Side view','FontSize',24);
+     xlabel('x-position','FontSize', 20);
+     zlabel('z-position','FontSize', 20);
      axis image;
-       ylim([-1 1])
-    xlim([-1 1])
-    zlim([-1 1])
+       ylim([-1.25 1.25])
+    xlim([-1.25 1.25])
+    zlim([-1.25 1.25])
     view (0,0);
-     set(gca,'FontSize',12);
+     set(gca,'FontSize',20);
+     grid off
     
     % Trjecotry 3
     
@@ -96,28 +107,32 @@
     figure(3);
    % setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
     subplot(1,2,1);
-    plot3(Tq3(:,1),Tq3(:,2),Tq3(:,3),'color','k','Linewidth',2);
+    plot3(Tq3(:,1),Tq3(:,2),Tq3(:,3),'color','k','Linewidth',3);
    %  subaxis(1,2,1, 'Spacing', 0.03, 'Padding', 0, 'Margin', 0.05);
-    title('Top view - Trajectory 3','FontSize',14);
+    title('Top view','FontSize',24);
+     xlabel('x-position','FontSize', 20);
+     ylabel('y-position','FontSize', 20);
     axis image;
-      ylim([-1 1])
-    xlim([-1 1])
-    zlim([-1 1])
+      ylim([-1.25 1.25])
+    xlim([-1.25 1.25])
+    zlim([-1.25 1.25])
     az =0;
     el = 90;
     view(az,el);
-     set(gca,'FontSize',12);
-     
+     set(gca,'FontSize',20);
+     grid off
     subplot(1,2,2);
    %  setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
-    plot3(Tq3(:,1),Tq3(:,2),Tq3(:,3),'color','k','Linewidth',2);
+    plot3(Tq3(:,1),Tq3(:,2),Tq3(:,3),'color','k','Linewidth',3);
   %   subaxis(1,2,2, 'Spacing', 0.03, 'Padding', 0, 'Margin', 0.05);
-     title('Side view - Trajectory 3','FontSize',14);
+     title('Side view','FontSize',24);
+          xlabel('x-position','FontSize', 20);
+     zlabel('z-position','FontSize', 20);
      axis image;
-       ylim([-1 1])
-    xlim([-1 1])
-    zlim([-1 1])
+       ylim([-1.25 1.25])
+    xlim([-1.25 1.25])
+    zlim([-1.25 1.25])
     view (0,0);
-     set(gca,'FontSize',12);
-    
+     set(gca,'FontSize',20);
+    grid off;
     

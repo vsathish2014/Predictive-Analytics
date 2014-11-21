@@ -12,25 +12,25 @@ switch plot_trajectory
     case 1 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory1_FC_10pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory1_FC_10pct_24092014_5_days_All_Run1.mat
             case 20
-                load ICRA2015_Tajectory1_FC_20pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory1_FC_20pct_24092014_5_days_All_Run1.mat
         end
     case 2 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory2_FC_10pct_18092014_5_days_All.mat
+                load ICRA2015_Tajectory2_FC_10pct_24092014_5_days_All_Run1.mat
 
             case 20
-                load ICRA2015_Tajectory1_FC_20pct_18092014_5_days_All.mat
+                load ICRA2015_Tajectory2_FC_20pct_24092014_5_days_All_Run1.mat
         end
     case 3 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory3_FC_10pct_18092014_5_days_All.mat
+                load ICRA2015_Tajectory3_FC_10pct_24092014_5_days_All_Run1.mat
 
             case 20
-                load ICRA2015_Tajectory3_FC_20pct_18092014_5_days_All.mat
+                load ICRA2015_Tajectory3_FC_20pct_24092014_5_days_All_Run1.mat
 
         end       
      

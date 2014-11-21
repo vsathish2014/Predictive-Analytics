@@ -6,31 +6,31 @@ clear id_1 ;
 clear c_1;
  
 plot_trajectory = 1;
-plot_fc_pct = 20;
+plot_fc_pct = 10;
 plot_axis = 1;
 switch plot_trajectory
     case 1 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory1_FC_10pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory1_FC_10pct_24092014_5_days_All_Run2.mat
             case 20
-                load ICRA2015_Tajectory1_FC_20pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory1_FC_20pct_24092014_5_days_All_Run1.mat
         end
     case 2 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory2_FC_10pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory2_FC_10pct_24092014_5_days_All_Run1.mat
 
             case 20
-                load ICRA2015_Tajectory1_FC_20pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory2_FC_20pct_24092014_5_days_All_Run1.mat
         end
     case 3 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory3_FC_10pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory3_FC_10pct_24092014_5_days_All_Run1.mat
 
             case 20
-                load ICRA2015_Tajectory3_FC_20pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory3_FC_20pct_24092014_5_days_All_Run1.mat
 
         end       
      
@@ -83,10 +83,12 @@ for j = 1:6
     
     for i = 1: 6             
       %// Cross correlation
-                  [c(:,:,k) lags(:,:,k)] = xcorr( (torque_data_n(:,j,fc_axis)),   (torque_data_n(:,i,fc_axis)),'unbiased');    %// Cross correlation
-                  % [c(:,:,k) lags(:,:,k)] = xcorr(zscore(tau_fc_pn_mn_avg(:,j,fc_axis)), zscore(tau_fc_pn_mn_avg(:,i,fc_axis)),'unbiased'); 
+                   %[c(:,:,k) lags(:,:,k)] = xcorr( (torque_data_n(:,j,fc_axis)),   (torque_data_n(:,i,fc_axis)),'unbiased');                   %// Cross correlation
+                  % [c(:,:,k) lags(:,:,k)] = xcorr( (torque_data_n(:,j,fc_axis)),   (torque_data_n(:,i,fc_axis)),'coeff');                   %// Cross correlation
+                  
+                   % [c(:,:,k) lags(:,:,k)] = xcorr(zscore(tau_fc_pn_mn_avg(:,j,fc_axis)), zscore(tau_fc_pn_mn_avg(:,i,fc_axis)),'unbiased'); 
                    
-                %   [c(:,:,k) lags(:,:,k)] = xcorr(zscore(tau_fc_pn_mn_hs(:,j,fc_axis)), zscore(tau_fc_pn_mn_hs(:,i,fc_axis)),'unbiased');              
+                     [c(:,:,k) lags(:,:,k)] = xcorr(zscore(tau_fc_pn_mn_hs(:,j,fc_axis)), zscore(tau_fc_pn_mn_hs(:,i,fc_axis)),'coeff');              
               k = k+1;
          
     end
@@ -98,8 +100,8 @@ lags = reshape(lags,[239,36]);
 %lags = reshape(lags,[119,36]);
  c = reshape(c,[239,36]);
 %c = reshape(c,[119,36]);
-frow = 10 ;
-lrow =229;
+frow = 1 ;
+lrow =239;
  
 % id_1 = zeros(36, 'uint8');
 % c_1 = zeros(36,'uint8');

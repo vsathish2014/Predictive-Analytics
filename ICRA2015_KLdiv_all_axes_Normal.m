@@ -1,18 +1,18 @@
 clc;
 clear all;
  
-plot_trajectory =3;
+plot_trajectory =1;
  
 % fc_axis = 1
 switch plot_trajectory
     case 1              
-         load ICRA2015_Tajectory1_NO_FC_20092014_5_days_All.mat             
-     
+       %  load ICRA2015_Tajectory1_NO_FC_25092014_5_days_All.mat            
+         load ICRA2015_Tajectory1_NO_FC_25092014_5_days_All_Run2.mat   
     case 2 
-         load ICRA2015_Tajectory2_NO_FC_20092014_5_days_All.mat
+         load ICRA2015_Tajectory2_NO_FC_25092014_5_days_All.mat
 
      case 3 
-         load ICRA2015_Tajectory3_NO_FC_20092014_5_days_All.mat
+         load ICRA2015_Tajectory3_NO_FC_25092014_5_days_All.mat
    
 end
 
@@ -39,13 +39,13 @@ end
 %         max_tau_4 = 24.2;
 %         max_tau_5 = 20.1;
 %         max_tau_6 = 21.3;
-
-        max_tau_1 = max(abs(tau_fc_pn_mn(2:6,1)));
-        max_tau_2 = max(abs(tau_fc_pn_mn(2:6,2)));
-        max_tau_3 = max(abs(tau_fc_pn_mn(2:6,3)));
-        max_tau_4 = max(abs(tau_fc_pn_mn(2:6,4)));
-        max_tau_5 = max(abs(tau_fc_pn_mn(2:6,5)));
-        max_tau_6 = max(abs(tau_fc_pn_mn(2:6,6)));
+%        max_tau_1 = max(abs(tau_fc_pn_mn(2:6,1)));
+        max_tau_1 = max(abs(tau_fc_pn_mn(2:6,1))) ;
+        max_tau_2 = max(abs(tau_fc_pn_mn(2:6,2))) ;
+        max_tau_3 = max(abs(tau_fc_pn_mn(2:6,3))) ;
+        max_tau_4 = max(abs(tau_fc_pn_mn(2:6,4))) ;
+        max_tau_5 = max(abs(tau_fc_pn_mn(2:6,5))) ;
+        max_tau_6 = max(abs(tau_fc_pn_mn(2:6,6))) ;
         switch axis
             case 1
                 max_tau = max_tau_1;
@@ -113,15 +113,15 @@ set(gca,'XTick',[0:5:120]);
 
     switch   plot_trajectory
         case 1
-            tau_print = fullfile('c:\results', 'Traj_1_KLD_fc_0pct.xlsx');
+            tau_print = fullfile('C:\IIITD\Publications\ICRA2015\Results', 'Traj_1_KLD_fc_0pct.xlsx');
             xlswrite(tau_print,col_header,'KLD_fc_1','A1');
             xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,1),'KLD_fc_1','A2');
         case 2
-            tau_print = fullfile('c:\results', 'Traj_2_KLD_fc_0pct.xlsx');
+            tau_print = fullfile('C:\IIITD\Publications\ICRA2015\Results', 'Traj_2_KLD_fc_0pct.xlsx');
             xlswrite(tau_print,col_header,'KLD_fc_2','A1');
             xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,1),'KLD_fc_1','A2'); 
         case 3
-            tau_print = fullfile('c:\results', 'Traj_3_KLD_fc_0pct.xlsx');
+            tau_print = fullfile('C:\IIITD\Publications\ICRA2015\Results', 'Traj_3_KLD_fc_0pct.xlsx');
             xlswrite(tau_print,col_header,'KLD_fc_3','A1');
             xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,1),'KLD_fc_1','A2'); 
         

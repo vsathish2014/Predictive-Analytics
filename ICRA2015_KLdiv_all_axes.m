@@ -1,32 +1,32 @@
 clc;
 clear all;
  
-plot_trajectory = 3;
-plot_fc_pct = 20;
+plot_trajectory =1;
+plot_fc_pct = 10;
 % fc_axis = 1
 switch plot_trajectory
     case 1 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory1_FC_10pct_22092014_5_days_All.mat
+                load ICRA2015_Tajectory1_FC_10pct_24092014_5_days_All_Run1.mat
             case 20
-                load ICRA2015_Tajectory1_FC_20pct_22092014_5_days_All.mat
+                load ICRA2015_Tajectory1_FC_20pct_24092014_5_days_All_Run1.mat                  
         end
     case 2 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory2_FC_10pct_22092014_5_days_All.mat
+                load ICRA2015_Tajectory2_FC_10pct_24092014_5_days_All_Run1.mat
 
             case 20
-                load ICRA2015_Tajectory2_FC_20pct_22092014_5_days_All.mat
+                load ICRA2015_Tajectory2_FC_20pct_24092014_5_days_All_Run1.mat
         end
     case 3 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory3_FC_10pct_21092014_5_days_All.mat
+                load ICRA2015_Tajectory3_FC_10pct_24092014_5_days_All_Run1.mat
 
             case 20
-                load ICRA2015_Tajectory3_FC_20pct_21092014_5_days_All.mat
+                load ICRA2015_Tajectory3_FC_20pct_24092014_5_days_All_Run1.mat
 
         end       
      
@@ -35,10 +35,10 @@ end
 % Sample the signal - hourly 
     time_hours = [1:6:120];
     % tau_fc_pn_mn = tau_fc_pn_mn(:,:,2);
-    
-    tau_fc_pn_mn_2(:,:,:) = tau_fc_pn_mn(2:end,:,:);    
-      
-    tau_fc_pn_mn_hs = tau_fc_pn_mn_2(4:360:end,:,:);
+%     
+%     tau_fc_pn_mn_2(:,:,:) = tau_fc_pn_mn(2:end,:,:);    
+%       
+%     tau_fc_pn_mn_hs = tau_fc_pn_mn_2(4:360:end,:,:);
     
      
 
@@ -56,12 +56,12 @@ for fc_axis = 1:6
 %         max_tau_5 = 20.1;
 %         max_tau_6 = 21.3;
 
-        max_tau_1 = max(abs(tau_fc_pn_mn(2:6,1,fc_axis)));
-        max_tau_2 = max(abs(tau_fc_pn_mn(2:6,2,fc_axis)));
-        max_tau_3 = max(abs(tau_fc_pn_mn(2:6,3,fc_axis)));
-        max_tau_4 = max(abs(tau_fc_pn_mn(2:6,4,fc_axis)));
-        max_tau_5 = max(abs(tau_fc_pn_mn(2:6,5,fc_axis)));
-        max_tau_6 = max(abs(tau_fc_pn_mn(2:6,6,fc_axis)));
+        max_tau_1 = max(abs(tau_fc_pn_mn(2:6,1,fc_axis))) ;
+        max_tau_2 = max(abs(tau_fc_pn_mn(2:6,2,fc_axis))) ;
+        max_tau_3 = max(abs(tau_fc_pn_mn(2:6,3,fc_axis))) ;
+        max_tau_4 = max(abs(tau_fc_pn_mn(2:6,4,fc_axis))) ;
+        max_tau_5 = max(abs(tau_fc_pn_mn(2:6,5,fc_axis))) ;
+        max_tau_6 = max(abs(tau_fc_pn_mn(2:6,6,fc_axis))) ;
         switch axis
             case 1
                 max_tau = max_tau_1;
@@ -112,6 +112,7 @@ clear distance;
     kldiv_dist_hs(:,:,fc_axis) = kldiv_dist(:,1:6:end,fc_axis);
 end
 figure(1);
+ 
 plot(x_axis,kldiv_dist_hs(:,:,1),'LineWidth',2);
 % axis([0,12,.5,2]);
 set(gca,'PlotBoxAspectRatio',[5 2 1]) ;
@@ -123,43 +124,46 @@ xlabel('samples','FontSize',12);
 ylabel('K-L distance','FontSize',12);
 set(gca,'XTick',[0:10:120]);
 
+ 
 % Writing KL distance to fie
 
  permuted_kldiv_dist_hs = permute(kldiv_dist_hs,[2,1,3]); 
 
  col_header ={'Axis_1','Axis_2','Axis_3','Axis_4','Axis_5','Axis_6'};
  
- switch plot_fc_pct
-     case 10
-
-        tau_print = fullfile('c:\results', 'Traj_3_KLD_fc_10pct.xlsx');
-        xlswrite(tau_print,col_header,'KLD_fc_1','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,1),'KLD_fc_1','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_2','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,2),'KLD_fc_2','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_3','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,3),'KLD_fc_3','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_4','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,4),'KLD_fc_4','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_5','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,5),'KLD_fc_5','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_6','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,6),'KLD_fc_6','A2');
-        
-     case 20
-         tau_print = fullfile('c:\results', 'Traj_3_KLD_fc_20pct.xlsx');
-        xlswrite(tau_print,col_header,'KLD_fc_1','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,1),'KLD_fc_1','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_2','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,2),'KLD_fc_2','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_3','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,3),'KLD_fc_3','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_4','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,4),'KLD_fc_4','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_5','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,5),'KLD_fc_5','A2');
-        xlswrite(tau_print,col_header,'KLD_fc_6','A1');
-        xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,6),'KLD_fc_6','A2');
-
- end     
+%  switch plot_fc_pct
+%      case 10
+% 
+%         tau_print = fullfile('C:\IIITD\Publications\ICRA2015\Results', 'Traj_3_KLD_fc_10pct.xlsx');
+%         xlswrite(tau_print,col_header,'KLD_fc_1','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,1),'KLD_fc_1','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_2','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,2),'KLD_fc_2','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_3','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,3),'KLD_fc_3','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_4','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,4),'KLD_fc_4','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_5','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,5),'KLD_fc_5','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_6','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,6),'KLD_fc_6','A2');
+%         
+%      case 20
+%          tau_print = fullfile('C:\IIITD\Publications\ICRA2015\Results', 'Traj_3_KLD_fc_20pct.xlsx');
+%         xlswrite(tau_print,col_header,'KLD_fc_1','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,1),'KLD_fc_1','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_2','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,2),'KLD_fc_2','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_3','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,3),'KLD_fc_3','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_4','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,4),'KLD_fc_4','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_5','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,5),'KLD_fc_5','A2');
+%         xlswrite(tau_print,col_header,'KLD_fc_6','A1');
+%         xlswrite(tau_print,permuted_kldiv_dist_hs(:,:,6),'KLD_fc_6','A2');
+%  
+%           
+%         
+%  end     
 

@@ -7,25 +7,25 @@ switch plot_trajectory
     case 1 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory1_FC_10pct_22092014_5_days_All.mat
+                load ICRA2015_Tajectory1_FC_10pct_24092014_5_days_All_Run1.mat
             case 20
-                load ICRA2015_Tajectory1_FC_20pct_22092014_5_days_All.mat
+                load ICRA2015_Tajectory1_FC_20pct_24092014_5_days_All_Run1.mat
         end
     case 2 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory2_FC_10pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory2_FC_10pct_24092014_5_days_All_Run1.mat
 
             case 20
-                load ICRA2015_Tajectory1_FC_20pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory2_FC_20pct_17092014_5_days_All.mat
         end
     case 3 
         switch plot_fc_pct
             case 10
-                load ICRA2015_Tajectory3_FC_10pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory3_FC_10pct_24092014_5_days_All_Run1.mat
 
             case 20
-                load ICRA2015_Tajectory3_FC_20pct_17092014_5_days_All.mat
+                load ICRA2015_Tajectory3_FC_20pct_24092014_5_days_All_Run1.mat
 
         end       
      
@@ -107,37 +107,39 @@ annotation('textbox', [0 0.9 1 0.1], ...
     'FontSize',14)	
 % 
 figure(2);
-tau_fc_pn_mn_2 = tau_fc_pn_mn(2:end,:,plot_axis); 
-tau_fc_pn_mn_s = tau_fc_pn_mn_2(4:6*360:end,:)
+tau_fc_pn_mn_2 = tau_fc_pn_mn(2:end,:,:); 
+tau_fc_pn_mn_s = tau_fc_pn_mn_2(4:6*360:end,:,plot_axis)
 
 %plot(time_minutes, tau_pn_mn_1);
 plot( time_hours',tau_fc_pn_mn_s,'LineWidth',2);
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 title('Overall Torque ','FontSize', 14);
-xlabel('Time in Hours','FontSize', 12);
-ylabel('Torque (Nm)','FontSize', 12);
+xlabel('Time (hours)','FontSize', 28);
+ylabel('Torque (Nm)','FontSize', 28);
 qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
-set(qdd_legend,'FontSize',8);
+set(qdd_legend,'FontSize',24);
 set(gca,'XTick',[0:10:120]);
+set(gca,'fontsize',22);
 grid on;
 % 
  
 % 
 figure(3);
  
-f_fc_pn_2 = f_fc_pn(2:end,1,plot_axis); 
-f_fc_pn_s = f_fc_pn_2(4:6*360:end,:)
+f_fc_pn_2 = f_fc_pn(2:end,:,:); 
+f_fc_pn_s = f_fc_pn_2(4:6*360:end,:,plot_axis)
  
 %plot( time_minutes,f_pn_mn_1);
-plot(time_hours,f_fc_pn_s,'LineWidth',2);
+plot(time_hours,f_fc_pn_s(:,plot_axis),'LineWidth',2);
 set(gca,'PlotBoxAspectRatio',[5 2 1])
 %title('Trend: Frictional Torque  ','FontSize', 12);
 title(' Frictional Torque - For a specific joint configuration','FontSize', 12);
-xlabel('Time in hours','FontSize', 10);
-ylabel('Torque (Nm)','FontSize', 10);
-qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
-set(qdd_legend,'FontSize',8);
-set(gca,'XTick',[0:10:120]);
+xlabel('Time (hours)','FontSize', 24);
+ylabel('Frictonal Torque (Nm)','FontSize', 24);
+%qdd_legend = legend('Axis 1','Axis 2','Axis 3','Axis 4','Axis 5','Axis 6');
+%set(qdd_legend,'FontSize',20);
+set(gca,'XTick',[0:10:120],'FontSize',18);
+set(gca,'FontSize',18);
 grid on;
  
 % figure(4);
