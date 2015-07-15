@@ -114,7 +114,7 @@ for file = files'
 Col_header_1 = {'KL_A_1','KL_A_2','KL_A_3','KL_A_4','KL_A_5','KL_A_6',...
               'KL_S_1','KL_S_2','KL_S_3','KL_S_4','KL_S_5','KL_S_6',...
               'KL_T_1','KL_T_2','KL_T_3','KL_T_4','KL_T_5','KL_T_6'};
-Col_header_2 = ColHeader_temp(:,218:316);   
+Col_header_2 = ColHeader_temp(:,218:290);   
 Col_header = cat(2, Col_header_2,Col_header_1);
 diff_Col_header = strcat('diff_',Col_header);
 Col_header_all = cat(2,Col_header,diff_Col_header);

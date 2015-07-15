@@ -1,14 +1,17 @@
 
-clear lags;
-clear c;
+% clear lags;
+% clear c;
 
 % % Read the data
-%      KL_data = xlsread('Trajectory1_Axis1_FC_10pct_09142014.xlsx','KL_All','A2:F145');
-   % entropy_data = xlsread('Entropy_08052014.xlsx','F_A2','A2:F13');
- permuted_kldiv_dist_hs = permute(kldiv_dist_hs,[2,1,3]);  
-    
+for p=1:6
+    sheetName = strcat('KLD_fc_',int2str(p));
+      KL_data(:,:,p) = xlsread('Traj_3_KLD_fc_20pct.xlsx',sheetName,'A2:F121');
+end
+%    % entropy_data = xlsread('Entropy_08052014.xlsx','F_A2','A2:F13');
+%  permuted_kldiv_dist_hs = permute(kldiv_dist_hs,[2,1,3]);  
+%     
   for fc_axis = 1:6
-    z =permuted_kldiv_dist_hs(:,:,fc_axis);
+    z =KL_data(:,:,fc_axis);
      
     min_KLD = kron(min(z),ones(120,1));
     max_KLD = kron(max(z),ones(120,1));
@@ -17,8 +20,8 @@ clear c;
     KL_data_n(isnan(KL_data_n))=0;
     KL_data_n(KL_data_n==0)=eps;
   end  
-  
-for fc_axis = 1:6 
+%   
+ for fc_axis = 1:6
    % fc_axis =1;
      j=0;
      i=0;
@@ -28,6 +31,7 @@ for fc_axis = 1:6
         for i = 1: 6             
                     % [c(:,:,k) lags(:,:,k)] = xcorr( (KL_data_n(:,j,fc_axis)),   (KL_data_n(:,i,fc_axis)),'unbiased');   %// Cross correlation
                      [c(:,:,k) lags(:,:,k)] = xcorr( (KL_data_n(:,j,fc_axis)),   (KL_data_n(:,i,fc_axis)),'coeff');
+                      %[c(:,:,k) lags(:,:,k)] = xcorr( zscore(KL_data(:,j,fc_axis)),   zscore(KL_data_n(:,i,fc_axis)),'coeff');
                      %   [c(:,:,k) lags(:,:,k)] = xcorr( zscore(permuted_kldiv_dist_hs(:,j,fc_axis)),   zscore(permuted_kldiv_dist_hs(:,i,fc_axis)),'unbiased'); 
             k = k+1;
 

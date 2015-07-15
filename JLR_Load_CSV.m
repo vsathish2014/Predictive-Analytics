@@ -1,21 +1,21 @@
 clear ;
 clc;
-
-fileID = fopen('JLR_Data_all.csv');
+%%
+fileID = fopen('JLRData.csv');
 
 while not(feof(fileID))
     
-        C = textscan(fileID,'%s %s  %f32', 'Delimiter', ',');
+        C = textscan(fileID,'%s %f32  %f32  %s %s %s %s  ', 'Delimiter', ',','CollectOutput',1, 'HeaderLines',1);
 end
 fclose(fileID);
-
+%%
 
 %celldisp(C)
 % %format short g
 % %M = [datenum(a{1}) a{2}]
 
 JLR_Data = cat(2, C{1},C{2},num2cell(C{3}));
- JLR_Data(1,1)=cellstr('OPCVM6'); % To address the problem with some special character
+% JLR_Data(1,1)=cellstr('OPCVM6'); % To address the problem with some special character
  
 
 [maxRows maxCols] = size(JLR_Data); 
