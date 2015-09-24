@@ -2,6 +2,7 @@
 % Mdodifed to consider only varying test data points
 clear all;
 clc;
+%% Load all data
 no_test= 17;
 pctVar = 90;
 files = dir('*.xlsx');
@@ -67,6 +68,7 @@ for file = files'
     eval([dsName_All_Test,'=data_All_Test;']);
       
 end
+%% PCA model
 
 %%% PCA model development using PLS toolbox
 options = pca('options');  % constructs a options structure for PCA
@@ -77,11 +79,11 @@ options.preprocessing = preprocess('default','autoscale'); %structure array
  % Us 2 pC for 6 signal KL
  % Use 3 PC for 6 signal R_KL
 %Load test case scenarios
-  test_slno = readtable('Test_Cases.xlsx','Sheet',2); 
+  test_slno = readtable('Test_Cases_OTM_Diff_DS2.xlsx','Sheet',2); 
     test_slno = table2cell(test_slno); 
    no_pc = cell2mat(test_slno(:,4));
  
- n = 180;
+ n = 10;
  
 %n=2;
 %summary_stat =zeros(8,n);
@@ -105,10 +107,6 @@ for i = 1:n
     no_pc_n(i) = min(find(temp4(:,4)>pctVar));   
     model = pca(training,no_pc_n(i),options);
     
-%     % Revise based on optimal number of PCs
-%     noPCs = choosecomp(model);
-%     model = pca(training,noPCs,options);
-    
     prediction    = pca(test,model,options);
     %    model_variance(:,:,i) = ssqtable(model,6);
 
@@ -125,11 +123,6 @@ for i = 1:n
     count_elements_above_threshold(:,i) = nnz(elements_above_threshold(:,i)); % find non zero elements
     summary_stat(1:5,i) = summary_stat_all.data(1:5,1);
     
-%     
-%     % hotelling T squared
-%     t_squared_model(1:40,i) = model.tsqs{1,1};
-%     t_squared_prediction(1:15,i) = prediction.tsqs{1,1};
-%      t_confLimit(:,i) = tsqlim(model ,ConfLimit);
     
 end
 
@@ -157,24 +150,18 @@ Std_residual = std(q_residual_pred);
 % Cov of Q_residual
 CoV_Q_residual = Std_residual./Avg_residual;
 
-% % Averagae of t squared
-% Avg_tsq = mean(t_squared_prediction);
-% %Max of t squared
-% Max_tsq = max(t_squared_prediction);
-% %Std deviation of t squared
-% Std_tsq = std(t_squared_prediction);
-
-
 test_results = cat(2,CoV_Q_residual',...
-                   first_pt_outside_threshold',  count_elements_above_threshold');
-                      
+                   first_pt_outside_threshold',  count_elements_above_threshold');                    
                   
 %Print the file to excel                  
-stat_print = fullfile('C:\Users\insav3\Predictive Analytics\DataSets\GB 60day -before failure\Results', 'TestCase_Results.xlsx');
-      
+stat_print = fullfile('C:\Users\insav3\Predictive Analytics\DataSets\GB 60day -before failure\Results', 'TestCase_Results_OTM_Diff_DS2.xlsx');
+ 
+x = model.loads{2,1};
 xlswrite(stat_print, test_results,'Results','G2');
+xlswrite(stat_print,x,'loadings','B2')
 
-
-% vc = varcap( training,model_content.loads{2,1}); - to find the variables
+% Rotated loading 
+vloads = varimax(x,options);
+%%% vc = varcap( training,model_content.loads{2,1}); - to find the variables
 % which contributes
                   

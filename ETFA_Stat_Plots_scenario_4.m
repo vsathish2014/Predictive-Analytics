@@ -3,7 +3,7 @@ clear all,
 clc;
 
 % Load file
-Results_data = readtable('TestCase_Results_15.xlsx','Sheet',1); 
+Results_data = readtable('TestCase_Results_3.xlsx','Sheet',1); 
 Results_data = table2cell(Results_data); 
 Results_data = cell2mat(Results_data(:,1:9));
 
@@ -27,7 +27,7 @@ OTO_N_ST3 = Results_data(find(Results_data(:,1)==2 & Results_data(:,2)==3 & Resu
 
 
 for plotno= 1:3
-figure(plotno);
+h(plotno) = figure(plotno);
 y_labels ={'Coeff of Variation: Q Residual',...
             'Lead time (days)',...
            'Number of Samples above threshold'} ;
@@ -76,6 +76,9 @@ set(bar_handle(2),'FaceColor',[0 0 1])
     legend('Failure', 'Normal');
      set(gca,'box','off');
      legend('boxoff');
-    
+   % Save the file 
+ %saveas(h(plotno),sprintf('figure_%d.fig',plotno))
+ savefig(h,'ThreeDaysBeforeFailure_var90.fig') 
+  
 end    
     

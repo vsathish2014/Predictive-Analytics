@@ -46,7 +46,7 @@ py = 1-marg_h(2)-axh;
 
 ha = zeros(Nh*Nw,1);
 ii = 0;
-for ih = 1:Nh
+for ih = 1:Nh    %ih to ix, Nh to Nw
     px = marg_w(1);
     
     for ix = 1:Nw

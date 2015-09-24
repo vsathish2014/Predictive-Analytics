@@ -2,6 +2,7 @@
 clear all, 
 clc;
 
+noDays = 1;
 % Load file
 Results_data = readtable('TestCase_Results.xlsx','Sheet',1); 
 Results_data = table2cell(Results_data); 
@@ -27,7 +28,7 @@ OTO_N_ST3 = Results_data(find(Results_data(:,1)==2 & Results_data(:,2)==3 & Resu
 
 
 for plotno= 1:3
-figure(plotno);
+h(plotno)=figure(plotno);
 y_labels ={'Coeff of Variation: Q Residual',...
             'No. of days before failure for the first sample above threshold',...
            'Number of Samples above threshold'} ;
@@ -73,6 +74,10 @@ set(bar_handle(2),'FaceColor',[0 0 1])
     set(gca,'xticklabel',{'OTM-F OTM-N','OTO-F OTO-N','OTM-F OTM-N','OTO-F OTO-N','OTM-F OTM-N','OTO-F OTO-N'},'FontSize',10);
 
     set(gcf,'color','w');
-    
+ 
+ % Save the file 
+ %saveas(h(plotno),sprintf('figure_%d.fig',plotno))
+ savefig(h,'OneDayBeforeFailure.fig')   
 end    
     
+
